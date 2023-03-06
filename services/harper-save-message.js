@@ -5,7 +5,7 @@ const harperSaveMessage = (message, username, room) => {
     const dbPw = process.env.HARPERDB_PW;
     if (!dbUrl || !dbPw) return null;
 
-    const data = JSON.stringify({
+    let data = JSON.stringify({
         operation: 'insert',
         schema: 'realtime_chat_app',
         table: 'messages',
@@ -18,7 +18,7 @@ const harperSaveMessage = (message, username, room) => {
         ],
     });
 
-    const config = {
+    let config = {
         method: 'post',
         url: dbUrl,
         headers: {
