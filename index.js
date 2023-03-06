@@ -16,15 +16,25 @@ const io = new Server(server, {
 });
 
 const CHAT_BOT = 'ChatBot';
+let chatRoom = '';
+let allUsers = [];
 
 // listner
 io.on('connection', (socket) => {
     console.log(`User connected ${socket.id}`);
 
+
     // добавление в комнату
     socket.on('join_room', (data) => {
         const { username, room } = data;
         socket.join(room);
+
+        // сохранение пользователей в комнате
+        chatRoom = room;
+        allUsers.push({ id: socket.id, username, room });
+        chatRoomUsers = allUsers.filter((user) => user.room === room);
+        socket.to(room).emit('chatroom_users', chatRoomUsers);
+        socket.emit('chatroom_users', chatRoomUsers);
 
         let __createdtime__ = Date.now();
         // рассылка всем кто в чате
